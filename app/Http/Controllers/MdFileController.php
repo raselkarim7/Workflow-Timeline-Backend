@@ -32,10 +32,12 @@ class MdFileController extends Controller
         return 'File Path Not Found';
     }
 
-    public function getFilesOfaMonth() {
+    public function getFilesOfaMonth(Request $request) {
+        $data = $request->all();
+        $month = $data['month'];
+        $year = $data['year'];
         $root_dir = 'workflow_timeline';
-        $year = '2019';
-        $month = 'Mar';
+        //$year = '2019';
         $FOLDER_NAME = "$root_dir/$year/$month";
         $sub_directories = Storage::disk('local')->directories("$FOLDER_NAME");
         $appenedAllMonthText = '';
@@ -88,36 +90,11 @@ class MdFileController extends Controller
                 $appendedFilesText = $appendedFilesText."<br>$detailsOutput";
             }
         }
-
-        return  $appendedFilesText;
+        return "<details><summary class='ml-3'>".$monthName." $dayName"."</summary>\n<div class='ml-5'>$appendedFilesText</div>\n</details>";
+        //return  $appendedFilesText;
     }
 
-    public function getFilesOfaDay_backup() {
-        $FOLDER_NAME = "workflow_timeline/".date('Y/M/d');
-        /*
-            $userName = "Tanay";
-            $FILE_NAME = $userName;
-            $FILE_EXTENSION = '.md';
-            $filePath = "$FILE_NAME"."$FILE_EXTENSION";
-        */
-        $allfilepaths = Storage::disk('local')->files("$FOLDER_NAME");
 
-        if (empty($allfilepaths)) {
-            return 'All File Paths Are Empty';
-        }
-
-        $appendedFilesText = '';
-        foreach ($allfilepaths as $filepath) {
-            $output = self::getSingleFileByPath($filepath);
-            if (empty($appendedFilesText)) {
-                $appendedFilesText = $output;
-            } else {
-                $appendedFilesText = $appendedFilesText."<br>$output";
-            }
-        }
-
-        return $appendedFilesText;
-    }
 
     public function savemdfile(Request $request) {
         // dd( date('Y/M/d'), date('h:i:s') );
@@ -138,7 +115,9 @@ class MdFileController extends Controller
         $FILE_EXTENSION = '.md';
 
         // $textData = "# Pulp Fiction \n## Say What Again \n### I dare you \n#### I double dare you";
-        $fileHeading = "<h4 style='font-weight: 400;'> $userName: ".date('M d, Y')."</h4>";
+
+        //$fileHeading = "<h4 style='font-weight: 400;'> $userName: ".date('M d, Y')."</h4>";
+        $fileHeading = '';
         $fileBodyPart = $textDataTemplate;
         // return $fileBodyPart;
         $OUTPUT_FIRSTLINE_WITH_FILE_HEADING = "$fileHeading"."$fileBodyPart";
@@ -237,4 +216,30 @@ class MdFileController extends Controller
         }
     }
 
+    public function unused_now_getFilesOfaDay_backup() { // Not Used Now
+        $FOLDER_NAME = "workflow_timeline/".date('Y/M/d');
+        /*
+            $userName = "Tanay";
+            $FILE_NAME = $userName;
+            $FILE_EXTENSION = '.md';
+            $filePath = "$FILE_NAME"."$FILE_EXTENSION";
+        */
+        $allfilepaths = Storage::disk('local')->files("$FOLDER_NAME");
+
+        if (empty($allfilepaths)) {
+            return 'All File Paths Are Empty';
+        }
+
+        $appendedFilesText = '';
+        foreach ($allfilepaths as $filepath) {
+            $output = self::getSingleFileByPath($filepath);
+            if (empty($appendedFilesText)) {
+                $appendedFilesText = $output;
+            } else {
+                $appendedFilesText = $appendedFilesText."<br>$output";
+            }
+        }
+
+        return $appendedFilesText;
+    }
 }

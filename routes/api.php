@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 */
 
-Route::get('/getfilesofaday', 'MdFileController@getFilesOfaDay');
+//Route::get('/getfilesofaday', 'MdFileController@getFilesOfaDay');
 Route::get('/getfilesofamonth', 'MdFileController@getFilesOfaMonth');
 
 Route::get('/savemdfile', 'MdFileController@savemdfile');
