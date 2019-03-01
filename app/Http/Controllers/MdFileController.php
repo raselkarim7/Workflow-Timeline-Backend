@@ -23,7 +23,7 @@ class MdFileController extends Controller
     public static function getSingleFileByPath ( $path ) {
         if (Storage::disk('local')->exists($path)) {
             try {
-                $text =  Storage::disk('local')->get($path);
+                $text = Storage::disk('local')->get($path);
                 return $text;
             } catch (\Exception $exception){
                 return json_encode($exception);
@@ -82,7 +82,6 @@ class MdFileController extends Controller
             $dayName = $directories[$directoriesDepth-2];
             $monthName = $directories[$directoriesDepth-3];
             $extensionPosition = 0;
-
             $detailsOutput = "<details><summary class='ml-3'>".$monthName." $dayName, ".$onlyFileName."</summary>\n<div class='ml-3'>$output</div>\n</details>";
             if (empty($appendedFilesText)) {
                 $appendedFilesText = $detailsOutput;
@@ -106,7 +105,8 @@ class MdFileController extends Controller
         // dd($textData);
         // return $textData;
         // dd($textData);
-        $textDataTemplate = "<details><summary class='ml-3'>".date('h:i:s')."</summary>\n<pre class='ml-3'>$textData</pre>\n</details>";
+        $textDataTemplate = "<details><summary class='ml-3'>".date('h:i:s')."</summary>\n<pre class='ml-3 p-2' style='background: #F6F8FA;
+  border-radius: 5px;'>$textData</pre>\n</details>";
         // return $textData;
         // dd('comessssssssss');
         // $userName = "Awon";
