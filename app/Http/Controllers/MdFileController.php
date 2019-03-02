@@ -46,10 +46,10 @@ class MdFileController extends Controller
             if(empty($appenedAllMonthText)) {
                 $appenedAllMonthText = $output;
             } else {
-                $appenedAllMonthText = $appenedAllMonthText."<br>".$output;
+                $appenedAllMonthText = $appenedAllMonthText."".$output;
             }
         }
-        $textFormat = "<h2 style='font-weight: 400; font-style: italic'>$month $year</h2> <div class='ml-5'>$appenedAllMonthText</div>";
+        $textFormat = "<h4 style='font-weight: 300;'>$month $year</h4> <div class='ml-5'>$appenedAllMonthText</div>";
         return $textFormat;
     }
 
@@ -82,11 +82,11 @@ class MdFileController extends Controller
             $dayName = $directories[$directoriesDepth-2];
             $monthName = $directories[$directoriesDepth-3];
             $extensionPosition = 0;
-            $detailsOutput = "<details><summary class='ml-3'>".$monthName." $dayName, ".$onlyFileName."</summary>\n<div class='ml-3'>$output</div>\n</details>";
+            $detailsOutput = "<details><summary class='ml-3'>".$monthName." $dayName, <span class='filename'>".$onlyFileName."</span></summary>\n<div class='ml-3'>$output</div>\n</details>";
             if (empty($appendedFilesText)) {
                 $appendedFilesText = $detailsOutput;
             } else {
-                $appendedFilesText = $appendedFilesText."<br>$detailsOutput";
+                $appendedFilesText = $appendedFilesText."$detailsOutput";
             }
         }
         return "<details><summary class='ml-3'>".$monthName." $dayName"."</summary>\n<div class='ml-5'>$appendedFilesText</div>\n</details>";
@@ -96,30 +96,21 @@ class MdFileController extends Controller
 
 
     public function savemdfile(Request $request) {
-        // dd( date('Y/M/d'), date('h:i:s') );
         // workflow_timeline/2019/Feb/27/Awon.md
-        // return 'ddddddddddd';
 
         $userName = $request->username;
         $textData = $request->textData;
-        // dd($textData);
-        // return $textData;
-        // dd($textData);
-        $textDataTemplate = "<details><summary class='ml-3'>".date('h:i:s')."</summary>\n<pre class='ml-3 p-2' style='background: #F6F8FA;
-  border-radius: 5px;'>$textData</pre>\n</details>";
-        // return $textData;
-        // dd('comessssssssss');
-        // $userName = "Awon";
+
+        $htmlEntitiesTextData = htmlentities($textData); // This is so vital.
+        $textDataTemplate = "<details><summary class='ml-3'>".date('h:i:s')."</summary>\n<pre class='pre-tag-text-field'>\n$htmlEntitiesTextData\n</pre></details>";
+
         $FOLDER_NAME = "workflow_timeline/".date('Y/M/d');
         $FILE_NAME = $userName;
         $FILE_EXTENSION = '.md';
 
-        // $textData = "# Pulp Fiction \n## Say What Again \n### I dare you \n#### I double dare you";
-
         //$fileHeading = "<h4 style='font-weight: 400;'> $userName: ".date('M d, Y')."</h4>";
         $fileHeading = '';
         $fileBodyPart = $textDataTemplate;
-        // return $fileBodyPart;
         $OUTPUT_FIRSTLINE_WITH_FILE_HEADING = "$fileHeading"."$fileBodyPart";
 
         if(Storage::disk('local')->exists("$FOLDER_NAME")) {
@@ -236,7 +227,7 @@ class MdFileController extends Controller
             if (empty($appendedFilesText)) {
                 $appendedFilesText = $output;
             } else {
-                $appendedFilesText = $appendedFilesText."<br>$output";
+                $appendedFilesText = $appendedFilesText."$output";
             }
         }
 
