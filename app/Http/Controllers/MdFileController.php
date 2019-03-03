@@ -32,27 +32,6 @@ class MdFileController extends Controller
         return 'File Path Not Found';
     }
 
-    public function getFilesOfaMonth(Request $request) {
-        $data = $request->all();
-        $month = $data['month'];
-        $year = $data['year'];
-        $root_dir = 'workflow_timeline';
-        //$year = '2019';
-        $FOLDER_NAME = "$root_dir/$year/$month";
-        $sub_directories = Storage::disk('local')->directories("$FOLDER_NAME");
-        $appenedAllMonthText = '';
-        foreach ($sub_directories as $directory) {
-            $output = self::getFilesOfaDay($directory);
-            if(empty($appenedAllMonthText)) {
-                $appenedAllMonthText = $output;
-            } else {
-                $appenedAllMonthText = $appenedAllMonthText."".$output;
-            }
-        }
-        $textFormat = "<h4 style='font-weight: 300;'>$month $year</h4> <div class='ml-5'>$appenedAllMonthText</div>";
-        return $textFormat;
-    }
-
     public static function getFilesOfaDay($folder_name) {
 
         $FOLDER_NAME = $folder_name;
@@ -82,16 +61,39 @@ class MdFileController extends Controller
             $dayName = $directories[$directoriesDepth-2];
             $monthName = $directories[$directoriesDepth-3];
             $extensionPosition = 0;
-            $detailsOutput = "<details><summary class='ml-3'>".$monthName." $dayName, <span class='filename'>".$onlyFileName."</span></summary>\n<div class='ml-3'>$output</div>\n</details>";
+                $detailsOutput = "<details><summary class='ml-0'><span class='fourth_1'>$monthName</span><span class='fourth_2'> $dayName, </span><span class='fourth_3'>".$onlyFileName."</span></summary>\n<div class='fifth_files_ofaday_bypreson'>$output</div>\n</details>";
             if (empty($appendedFilesText)) {
                 $appendedFilesText = $detailsOutput;
             } else {
                 $appendedFilesText = $appendedFilesText."$detailsOutput";
             }
         }
-        return "<details><summary class='ml-3'>".$monthName." $dayName"."</summary>\n<div class='ml-5'>$appendedFilesText</div>\n</details>";
+        return "<details><summary class='ml-0 second_day'>".$monthName." $dayName"."</summary>\n<div class='third_files_ofaday'>$appendedFilesText</div>\n</details>";
         //return  $appendedFilesText;
     }
+
+
+    public function getFilesOfaMonth(Request $request) {
+        $data = $request->all();
+        $month = $data['month'];
+        $year = $data['year'];
+        $root_dir = 'workflow_timeline';
+        //$year = '2019';
+        $FOLDER_NAME = "$root_dir/$year/$month";
+        $sub_directories = Storage::disk('local')->directories("$FOLDER_NAME");
+        $appenedAllMonthText = '';
+        foreach ($sub_directories as $directory) {
+            $output = self::getFilesOfaDay($directory);
+            if(empty($appenedAllMonthText)) {
+                $appenedAllMonthText = $output;
+            } else {
+                $appenedAllMonthText = $appenedAllMonthText."".$output;
+            }
+        }
+        $textFormat = "<span class='first_month'>$month $year</span> <div class='ml-5'>$appenedAllMonthText</div>";
+        return $textFormat;
+    }
+
 
 
 
@@ -102,7 +104,7 @@ class MdFileController extends Controller
         $textData = $request->textData;
 
         $htmlEntitiesTextData = htmlentities($textData); // This is so vital.
-        $textDataTemplate = "<details><summary class='ml-3'>".date('h:i:s')."</summary>\n<pre class='pre-tag-text-field'>\n$htmlEntitiesTextData\n</pre></details>";
+        $textDataTemplate = "<details><summary class='ml-3'><span class='sixth_time'>".date('h:i:s a')."</span></summary>\n<pre class='seventh_pretag_textfield'>\n$htmlEntitiesTextData\n</pre></details>";
 
         $FOLDER_NAME = "workflow_timeline/".date('Y/M/d');
         $FILE_NAME = $userName;
