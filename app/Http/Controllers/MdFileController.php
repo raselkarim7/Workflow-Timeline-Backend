@@ -104,7 +104,7 @@ class MdFileController extends Controller
         $textData = $request->textData;
 
         $htmlEntitiesTextData = htmlentities($textData); // This is so vital.
-        $textDataTemplate = "<details><summary class='ml-3'><span class='sixth_time'>".date('h:i:s a')."</span></summary>\n<pre class='seventh_pretag_textfield'>\n$htmlEntitiesTextData\n</pre></details>";
+        $textDataTemplate = "<details><summary class='ml-3'><span class='sixth_time'>".date('h: i: s a')."</span></summary>\n<pre class='seventh_pretag_textfield'>\n$htmlEntitiesTextData\n</pre></details>";
 
         $FOLDER_NAME = "workflow_timeline/".date('Y/M/d');
         $FILE_NAME = $userName;
