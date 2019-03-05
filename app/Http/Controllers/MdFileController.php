@@ -92,7 +92,12 @@ class MdFileController extends Controller
         $root_dir = 'workflow_timeline';
         $FOLDER_NAME = "$root_dir/$year/$month/$day";
         $output = self::getFilesOfaDay($FOLDER_NAME);
-        return $output;
+        //dd($output);
+        if (empty($output)) {
+            return "<span class='first_month'>$month $day, $year </span> <div class='eigth_nofilefound'>No File Found</div>";
+        }
+        $textFormat = "<span class='first_month'>$month $day, $year </span> <div class='ml-5'>$output</div>";
+        return $textFormat;
     }
 
 
