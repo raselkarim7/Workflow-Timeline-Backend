@@ -21,7 +21,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Route::get('/getfilesofaday', 'MdFileController@getFilesOfaDay');
 
 Route::get('/getserverdate', 'MdFileController@getServerDate');
+Route::get('/getfilesbyyearmonthday', 'MdFileController@getFilesByYearMonthDay');
 Route::get('/getfilesofamonth', 'MdFileController@getFilesOfaMonth');
+
 
 Route::get('/savemdfile', 'MdFileController@savemdfile');
 Route::post('/addemployeename', 'MdFileController@addEmployeeName');

@@ -84,6 +84,18 @@ class MdFileController extends Controller
     }
 
 
+    public function getFilesByYearMonthDay(Request $request) {
+        $data = $request->all();
+        $day = $data['day'];
+        $month = $data['month'];
+        $year = $data['year'];
+        $root_dir = 'workflow_timeline';
+        $FOLDER_NAME = "$root_dir/$year/$month/$day";
+        $output = self::getFilesOfaDay($FOLDER_NAME);
+        return $output;
+    }
+
+
     public function getFilesOfaMonth(Request $request) {
 
         $data = $request->all();
@@ -97,6 +109,7 @@ class MdFileController extends Controller
         //$year = '2019';
         $FOLDER_NAME = "$root_dir/$year/$month";
         $sub_directories = Storage::disk('local')->directories("$FOLDER_NAME");
+        //dd($sub_directories);
         $appenedAllMonthText = '';
         foreach ($sub_directories as $directory) {
             $output = self::getFilesOfaDay($directory);
