@@ -49,7 +49,7 @@ class MdFileController extends Controller
         $allfilepaths = Storage::disk('local')->files("$FOLDER_NAME");
 
         if (empty($allfilepaths)) {
-            return 'All File Paths Are Empty';
+            return "";
         }
 
         $appendedFilesText = '';
@@ -85,24 +85,30 @@ class MdFileController extends Controller
 
 
     public function getFilesOfaMonth(Request $request) {
+
         $data = $request->all();
         $month = $data['month'];
         $year = $data['year'];
         $root_dir = 'workflow_timeline';
+        //dd($root_dir, $month);
+        if ($month == null) {
+            return "<span class='first_month'>$month $year</span> <div class='ninth_selectmonth'>Now Select Month</div>";
+        }
         //$year = '2019';
         $FOLDER_NAME = "$root_dir/$year/$month";
         $sub_directories = Storage::disk('local')->directories("$FOLDER_NAME");
         $appenedAllMonthText = '';
         foreach ($sub_directories as $directory) {
             $output = self::getFilesOfaDay($directory);
+
             if(empty($appenedAllMonthText)) {
                 $appenedAllMonthText = $output;
             } else {
                 $appenedAllMonthText = $appenedAllMonthText."".$output;
             }
+
         }
-        // dd($appenedAllMonthText);
-        // return $appenedAllMonthText;
+
         if (empty($appenedAllMonthText)) {
             return "<span class='first_month'>$month $year</span> <div class='eigth_nofilefound'>No File Found</div>";
         }
