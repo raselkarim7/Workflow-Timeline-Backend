@@ -12,9 +12,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use function MongoDB\BSON\toJSON;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class MdFileController extends Controller
 {
+    public function getServerDate() {
+        $date = date('Y-M-d');
+        $array = explode( '-', $date);
+
+        $obj['year'] = $array[0];
+        $obj['month'] = $array[1];
+        $obj['day'] = $array[2];
+
+        return $obj;
+    }
 
     public function addEmployeeName(Request $request) {
 
@@ -61,7 +72,7 @@ class MdFileController extends Controller
             $dayName = $directories[$directoriesDepth-2];
             $monthName = $directories[$directoriesDepth-3];
             $extensionPosition = 0;
-                $detailsOutput = "<details><summary class='ml-0'><span class='fourth_1'>$monthName</span><span class='fourth_2'> $dayName, </span><span class='fourth_3'>".$onlyFileName."</span></summary>\n<div class='fifth_files_ofaday_bypreson'>$output</div>\n</details>";
+                $detailsOutput = "<details><summary class='ml-0'><span class='fourth_1'>$monthName</span><span class='fourth_2'> $dayName, </span><span name='$onlyFileName' class='fourth_3'>".$onlyFileName."</span></summary>\n<div class='fifth_files_ofaday_bypreson'>$output</div>\n</details>";
             if (empty($appendedFilesText)) {
                 $appendedFilesText = $detailsOutput;
             } else {
@@ -89,6 +100,11 @@ class MdFileController extends Controller
             } else {
                 $appenedAllMonthText = $appenedAllMonthText."".$output;
             }
+        }
+        // dd($appenedAllMonthText);
+        // return $appenedAllMonthText;
+        if (empty($appenedAllMonthText)) {
+            return "<span class='first_month'>$month $year</span> <div class='eigth_nofilefound'>No File Found</div>";
         }
         $textFormat = "<span class='first_month'>$month $year</span> <div class='ml-5'>$appenedAllMonthText</div>";
         return $textFormat;
