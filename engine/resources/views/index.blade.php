@@ -16,5 +16,5 @@
 </head>
 <body>
     <div id="app"></div>
-<script type="text/javascript" src="index_bundle.js"></script></body>
+<script type="text/javascript" src="/build/index_bundle.js"></script></body>
 </html>
